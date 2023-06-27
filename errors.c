@@ -107,5 +107,4 @@ int create_error(char **args, int err)
 	if (error)
 		free(error);
 	return (err);
-
-
+}
