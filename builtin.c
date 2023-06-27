@@ -1,12 +1,43 @@
 #include "main.h"
 
 /**
+ * builtin_help - Displays information about shellby builtin commands.
+ * @args: An array of arguments.
+ * @front: A pointer to the beginning of args.
+ * Return: If an error occurs - -1.
+ *      Otherwise - 0.
+**/
+int builtin_help(char **args, __silent char **front)
+{
+        if (!args[0])
+                help_all();
+        else if (_strcmp(args[0], "alias") == 0)
+                help_alias();
+        else if (_strcmp(args[0], "cd") == 0)
+                help_cd();
+        else if (_strcmp(args[0], "exit") == 0)
+                help_exit();
+        else if (_strcmp(args[0], "env") == 0)
+                help_env();
+        else if (_strcmp(args[0], "setenv") == 0)
+                help_setenv();
+        else if (_strcmp(args[0], "unsetenv") == 0)
+                help_unsetenv();
+        else if (_strcmp(args[0], "help") == 0)
+                help_help();
+        else
+                write(STDERR_FILENO, name, _strlen(name));
+
+        return (0);
+}
+
+
+/**
  * get_builtin - Matches a command with a corresponding
  *	shellby builtin function.
  * @command: The command to match.
- *
  * Return: A function pointer to the corresponding builtin.
- */
+**/
 int (*get_builtin(char *command))(char **args, char **front)
 {
 	builtin_t funcs[] = {
@@ -34,13 +65,11 @@ int (*get_builtin(char *command))(char **args, char **front)
  *	for the shellby shell.
  * @args: An array of arguments containing the exit value.
  * @front: A double pointer to the beginning of args.
- *
  * Return: If there are no arguments - -3.
  *	If the given exit value is invalid - 2.
  *	O/w - exits with the given status value.
- *
  * Description: Upon returning -3, the program exits back in the main function.
- */
+**/
 int builtin_exit(char **args, char **front)
 {
 	int i = 0, len_of_int = 10;
@@ -75,46 +104,13 @@ int builtin_exit(char **args, char **front)
 }
 
 /**
- * builtin_help - Displays information about shellby builtin commands.
- * @args: An array of arguments.
- * @front: A pointer to the beginning of args.
- *
- * Return: If an error occurs - -1.
- *	Otherwise - 0.
- */
-int builtin_help(char **args, __silent char **front)
-{
-	if (!args[0])
-		help_all();
-	else if (_strcmp(args[0], "alias") == 0)
-		help_alias();
-	else if (_strcmp(args[0], "cd") == 0)
-		help_cd();
-	else if (_strcmp(args[0], "exit") == 0)
-		help_exit();
-	else if (_strcmp(args[0], "env") == 0)
-		help_env();
-	else if (_strcmp(args[0], "setenv") == 0)
-		help_setenv();
-	else if (_strcmp(args[0], "unsetenv") == 0)
-		help_unsetenv();
-	else if (_strcmp(args[0], "help") == 0)
-		help_help();
-	else
-		write(STDERR_FILENO, name, _strlen(name));
-
-	return (0);
-}
-
-/**
  * builtin_cd - Changes the current directory of the shellby process.
  * @args: An array of arguments.
  * @front: A double pointer to the beginning of args.
- *
  * Return: If the given string is not a directory - 2.
  *	If an error occurs - -1.
  *	Otherwise - 0.
- */
+**/
 int builtin_cd(char **args, __silent char **front)
 {	char **dir_info, *new_line = "\n";
 	char *oldpwd = NULL, *pwd = NULL;
